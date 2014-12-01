@@ -134,6 +134,7 @@
 				E48EEAE41A2D15E400FCE92B /* Sources */,
 				E48EEAE51A2D15E400FCE92B /* Frameworks */,
 				E48EEAE61A2D15E400FCE92B /* Resources */,
+				E48EEB151A2D164F00FCE92B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -218,6 +219,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E48EEB151A2D164F00FCE92B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Every syntax should be exactly the same\nconf=${CONFIGURATION}\nbuildPlist=${PROJECT_DIR}/${INFOPLIST_FILE}\n# Only increase the build number on Device and AdHoc/AppStore(Release) build\nbundleVersion=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbundleVersion=$(printf \"%d\" \"0x$bundleVersion\")\nbundleVersion=$(($bundleVersion+1))\nbundleVersion=$(printf \"%04x\" \"$bundleVersion\")\nbundleVersion=$(echo $bundleVersion | tr \"a-f\" \"A-F\")\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $bundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n\nif [ ${CONFIGURATION} = \"Release\" ]; then\nversion=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nmainVersion=$(echo \"$version\" | awk -F '.' '{print $1}')\nminorVersion=$(echo \"$version\" | awk -F '.' '{print $2}')\nminorVersion=$(($minorVersion+1))\nversion=$(printf \"%d.%d\" \"$mainVersion\" \"$minorVersion\")\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $version\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E48EEAE41A2D15E400FCE92B /* Sources */ = {
@@ -351,6 +368,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = SimMemory/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -361,6 +379,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = SimMemory/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
